@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tap Me</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f6d365, #fda085);
+    }
+    button {
+      font-size: 28px;
+      padding: 18px 28px;
+      border: 0;
+      border-radius: 14px;
+      background: #111;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,.2);
+    }
+  </style>
+</head>
+<body>
+  <button id="beepBtn">Tap Here</button>
+
+  <script>
+    document.getElementById("beepBtn").addEventListener("click", async () => {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioContext();
+
+      for (let i = 0; i < 10; i++) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.value = 950;
+        gain.gain.value = 0.2;
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        const start = ctx.currentTime + i * 0.35;
+        const end = start + 0.18;
+
+        osc.start(start);
+        osc.stop(end);
+      }
+    });
+  </script>
+</body>
+</html>
